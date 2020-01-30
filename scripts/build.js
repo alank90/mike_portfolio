@@ -31,6 +31,7 @@ require("rimraf")("./dist", function() {
       const uglifyJS = async function() {
         try {
           const readDirectory = await readdir("./src/css");
+          console.log(readDirectory[0]);
 
           if (readDirectory[0] === "main.css" && readDirectory.length === 1) {
             console.log("main.css: build and uglify");

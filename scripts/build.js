@@ -24,7 +24,6 @@ const imageminGifSicle = require("imagemin-gifsicle");
 require("rimraf")("./dist", function() {
   // and then start rebuilding everything from scratch
   mkdirp("./dist/css").then(made => {
-    console.log(`made directories, starting with ${made}`);
     if (made === undefined) {
       console.error(err);
     } else {
@@ -46,7 +45,7 @@ require("rimraf")("./dist", function() {
 
             await writeFile("dist/css/main.css", uglified);
 
-            return `Alert! ./src/css/main.css copied to /dist/css. ${checkMark}
+            return `${checkMark} Success! ./src/css/main.css copied to /dist/css. 
                     ======== End =========`;
 
             // Copy /src/css to /dist/css folder
@@ -64,9 +63,9 @@ require("rimraf")("./dist", function() {
               await writeFile(`dist/css/${cssFile}`, uglified);
             });
 
-            return `Uglified and copied CSS file(s) Successfully!!! ======= ${checkMark}`;
+            return `${checkMark} Uglified and copied CSS file(s) Successfully!!! ======= `;
           } else if (!readDirectory.length) {
-            return `Alert. /css directory empty ${warning}
+            return `${warning} Alert. /css directory empty 
              ====== End CSS Uglify. No files to uglify. =====`;
           } // end if/else
         } catch (err) {
@@ -95,7 +94,7 @@ require("rimraf")("./dist", function() {
           // single javascript file.
           b.bundle().pipe(indexjs);
 
-          return `==== Browserify JavaScript Bundling Successful ===== ${checkMark}`;
+          return `${checkMark} ==== Browserify JavaScript Bundling Successful ===== `;
         } catch (err) {
           console.log("ERROR: " + err);
         }
@@ -112,7 +111,7 @@ require("rimraf")("./dist", function() {
           if (err) {
             return `Alert! Check if the directory src/img exists. ${err}`;
           } else if (files.length === 0) {
-            return `images: No images found. ${warning}`;
+            return ` ${warning} images: No images found.`;
           } else {
             mkdirp("./dist/img", function(err) {
               if (err) {
@@ -130,7 +129,7 @@ require("rimraf")("./dist", function() {
           }
         });
 
-        return `==== Images Compressed Successfully === ${checkMark}`;
+        return `${checkMark} ==== Images Compressed Successfully === `;
       }; // end async
       /* jshint ignore:end */
       // ========= End compressImages Function ==================== //
@@ -145,7 +144,7 @@ require("rimraf")("./dist", function() {
         } catch (err) {
           console.log("ERROR:", `err ${warning}`);
         }
-        return `Copied Index.html to /dist! ${checkMark}`;
+        return `${checkMark} Success! Copied Index.html to /dist. `;
       }; // end copyIndexFile
       /* jshint ignore:end */
 
@@ -175,9 +174,9 @@ require("rimraf")("./dist", function() {
 
             // Write Updated Main.css back to disk
             await writeFile("dist/css/main.css", distMainCss, "utf8");
-            return `Updated background-img URL CSS property Successfully ${checkMark}`;
+            return `${checkMark} Updated background-img URL CSS property Successfully`;
           } else {
-            return `Alert! No background-img property in CSS file ${warning}`;
+            return `${warning} Alert! No background-img property in CSS file`;
           }
         } catch (err) {
           return console.log("ERROR:", `err ${warning}`);
@@ -192,29 +191,41 @@ require("rimraf")("./dist", function() {
       /* jshint ignore:start */
       const miscOperations = async function(result) {
         console.log(result);
+
         try {
-          // Copy CNAME to /dist folder
-          await access("CNAME", fs.constants.R_OK | fs.constants.W_OK);
-          await copyFile("CNAME", "dist/CNAME");
+          // Copy CNAME to /dist folder if exists
+          const pathCname = "./CNAME";
+
+          if (fs.existsSync(pathCname)) {
+            await access("CNAME", fs.constants.R_OK | fs.constants.W_OK);
+            await copyFile("CNAME", "dist/CNAME");
+          } else {
+            console.log(`${warning} No CNAME File present.`);
+          }
 
           // Copy /src/resources to /dist folder
-          const readDirectory = await readdir("./resources");
+          const pathResources = "./src/resources";
+          if (!fs.existsSync(pathResources)) {
+            console.log(` ${warning} Error Reading The Resources Directory!`);
+          } else {
+            const readDirectory = await readdir(pathResources);
 
-          if (readDirectory[0] === "foo.txt" && readDirectory.length === 1) {
-            return `Alert! /resources only contains foo.txt. Directory not copied to /dist. ${warning}
+            if (readDirectory[0] === "foo.txt" && readDirectory.length === 1) {
+              return ` ${warning} Alert! /resources only contains foo.txt. Directory not copied to /dist.
             ======== End miscOperations. =========`;
-          } else if (readDirectory.length > 0) {
-            console.log("/resources directory present. Copying to /dist...");
-            copydir("resources", "dist/resources", err => {
-              if (err) {
-                throw console.log(`err ${warning}`);
-              }
-            });
-            return `Copied /resources to /dist directory successfully ${checkMark}
+            } else if (readDirectory.length > 0) {
+              console.log("/resources directory present. Copying to /dist...");
+              copydir(pathResources, "dist/resources", err => {
+                if (err) {
+                  throw console.log(`${warning} err`);
+                }
+              });
+              return `${checkMark} Copied /resources to /dist directory successfully
            ====== End miscOperations. ======`;
-          } else if (!readDirectory.length) {
-            return `Alert. /resources directory empty ${warning}
+            } else if (!readDirectory.length || !readDirectory) {
+              return `${warning} Alert. /resources directory empty 
             ====== End miscOperations. =====`;
+            }
           } // end if/else
         } catch (err) {
           return console.log("ERROR:", `err ${warning}`);
@@ -264,7 +275,7 @@ require("rimraf")("./dist", function() {
         })
         .then(result => {
           console.log(result);
-          console.log(`Pause for index.js to bundle and finish \u270B`);
+          console.log(` \u270B Pause for index.js to bundle and finish`);
           setTimeout(() => {
             // I know this is a kludge!!
             return UpdateFileLinks();

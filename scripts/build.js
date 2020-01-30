@@ -23,8 +23,9 @@ const imageminGifSicle = require("imagemin-gifsicle");
 // ============= Using rimraf to clean up any existing build ============================== //
 require("rimraf")("./dist", function() {
   // and then start rebuilding everything from scratch
-  mkdirp("./dist/css", function(err) {
-    if (err) {
+  mkdirp("./dist/css").then(made => {
+    console.log(`made directories, starting with ${made}`);
+    if (made === undefined) {
       console.error(err);
     } else {
       /* jshint ignore:start */

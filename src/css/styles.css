@@ -1,15 +1,15 @@
 html,
 body {
+  display: grid;
   height: 100%;
   margin: 0;
   overflow-y: hidden;
-  display: grid;
 }
 
 body {
-  font-family: Helvetica;
-  background-color: #a1a08c;
   -webkit-font-smoothing: antialiased;
+  background-color: #a1a08c;
+  font-family: Helvetica;
   text-rendering: optimizelegibility;
 }
 
@@ -19,26 +19,26 @@ div.container {
 
 h1 {
   color: #297faa;
-  margin: 0;
-  font-variant: small-caps;
   /*font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;*/
   font-family: "Calisto MT", "Bookman Old Style", Bookman, "Goudy Old Style",
     Garamond, "Hoefler Text", "Bitstream Charter", Georgia, serif;
+  font-variant: small-caps;
+  margin: 0;
 }
 
 h3 {
   color: #297faa;
-  margin: 0;
-  font-variant: small-caps;
   font-family: "Big Caslon", "Book Antiqua", "Palatino Linotype", Georgia, serif;
+  font-variant: small-caps;
+  margin: 0;
 }
 
 h5 {
   color: #297faa;
-  margin: 0;
   /*font-variant: small-caps;*/
   font-family: "Calisto MT", "Bookman Old Style", Bookman, "Goudy Old Style",
     Garamond, "Hoefler Text", "Bitstream Charter", Georgia, serif;
+  margin: 0;
 }
 
 h4 {
@@ -68,6 +68,6 @@ a.hover {
 }
 
 img {
-  max-width: 100%;
   height: auto;
+  max-width: 100%;
 }

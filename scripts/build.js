@@ -25,7 +25,7 @@ require("rimraf")("./dist", function() {
   // and then start rebuilding everything from scratch
   mkdirp("./dist/css").then(made => {
     if (made === undefined) {
-      console.error(err);
+      consolelog("Error line 28. Unable to create directory ./dist/css");
     } else {
       /* jshint ignore:start */
       const uglifyJS = async function() {
@@ -113,9 +113,9 @@ require("rimraf")("./dist", function() {
           } else if (files.length === 0) {
             return ` ${warning} images: No images found.`;
           } else {
-            mkdirp("./dist/img", function(err) {
-              if (err) {
-                return err;
+            mkdirp("./dist/img").then(made =>  {
+              if (made === undefined) {
+                console.log("Error Line 118. Unable to make Directory ./dist/img.")
               } else {
                 imagemin(["src/img/*.{jpg,png,gif,svg}"], "dist/img", {
                   plugins: [

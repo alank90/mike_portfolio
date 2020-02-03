@@ -33,13 +33,11 @@
     "file-copy": "^1.0.0",
     "imagemin": "^7.0.1",
     "imagemin-gifsicle": "^7.0.0",
-    "imagemin-jpegtran": "^6.0.0",
+    "imagemin-mozjpeg": "^8.0.0",
     "imagemin-pngquant": "^8.0.0",
+    "mkdirp": "^1.0.3",
     "rimraf": "^3.0.1",
     "uglifycss": "0.0.29",
     "uglifyify": "^5.0.2"
-  },
-  "dependencies": {
-    "mkdirp": "^1.0.3"
   }
 }

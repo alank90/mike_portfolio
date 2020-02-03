@@ -16,7 +16,7 @@ const writeFile = promisify(fs.writeFile);
 
 const mkdirp = require("mkdirp");
 const imagemin = require("imagemin");
-const imageminJpegtran = require("imagemin-jpegtran");
+const imageminMozjpeg = require("imagemin-mozjpeg");
 const imageminPngquant = require("imagemin-pngquant");
 const imageminGifSicle = require("imagemin-gifsicle");
 
@@ -113,17 +113,27 @@ require("rimraf")("./dist", function() {
           } else if (files.length === 0) {
             return ` ${warning} images: No images found.`;
           } else {
-            mkdirp("./dist/img").then(made =>  {
+            mkdirp("./dist/img").then(made => {
               if (made === undefined) {
-                console.log("Error Line 118. Unable to make Directory ./dist/img.")
+                console.log(
+                  "Error Line 118. Unable to make Directory ./dist/img."
+                );
               } else {
-                imagemin(["src/img/*.{jpg,png,gif,svg}"], "dist/img", {
-                  plugins: [
-                    imageminJpegtran(),
-                    imageminPngquant({ quality: "65-80" }),
-                    imageminGifSicle({ optimizationLevel: 2 })
-                  ]
-                });
+                (async () => {
+                  const files = await imagemin(
+                    ["src/img/*.{jpg,JPG,jpeg,JPEG,png,PNG,gif,GIF,svg,SVG}"],
+                    {
+                      destination: "dist/img",
+                      plugins: [
+                        imageminMozjpeg(),
+                        imageminPngquant({
+                          quality: [0.6, 0.8]
+                        }),
+                        imageminGifSicle({ optimizationLevel: 2 })
+                      ]
+                    }
+                  );
+                })();
               }
             });
           }
